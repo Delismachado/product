@@ -9,7 +9,7 @@ class Product:
             self.set_description(description)
 
         except:
-            raise TypeError
+            print("Error")
 
     def get_name(self) -> str:
         return self.__name
@@ -33,16 +33,16 @@ def create_product():
         print("Try again")        
 
 
-def list_products():   
+def list_products():
     for i, e in enumerate(prod["Products"]):        
-        print("")
+        print("[%d] %d" % (i,e))
 
 def update_product():
     try:
         input = input("Enter product id:")             
 
     except:
-        print("Erro")       
+        print("Error")       
 
 
 def delete_product():
