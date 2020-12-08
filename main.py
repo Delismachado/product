@@ -9,7 +9,7 @@ class Product:
         self.set_id()
         self.set_name(name)
         self.set_description(description)
-        self.set_categories = []
+        self.set_categories([])
         
 
     def set_id(self) -> None:
@@ -70,17 +70,7 @@ def create_category():
 
     menu()
 
-def create_product():
-    print("Create a new product")
-    name = input("Product name: ")
-    description = input("Product description: ")
-    category = input("Product category: ")   
-
-    product = Product(name, description, category)
-    products.append(product)
-    print("Cool, registered product!")
-
-    menu()
+   
 
 
 def list_categories():
@@ -89,10 +79,37 @@ def list_categories():
     else:
         print("Categories:")
         for category in categories:
-            print("Name: {}".format(categories.get_name()))
+            print("Name: {}".format(category.get_name()))
             
     menu()
-    
+
+def create_product():
+    print("Create a new product")
+    name = input("Product name: ")
+    description = input("Product description: ")
+
+    print("Choose category:")
+
+    prod_categories = []
+    opr = 1
+    while opr != 0:
+        if len(categories) == 0:
+            print("No categories available!")
+        else:
+            print("Categories:")
+            for category in categories:
+                print("{}. Name: {}".format([category.get_id(), category.get_name()]))
+        opr = int(input("Choose the category id: "))
+        # buscar categoria com o id escolhido
+        
+        # adicionar nome da categoria em prod_categories
+        print(opr)
+
+    product = Product(name, description, prod_categories)
+    products.append(product)
+    print("Cool, registered product!")
+
+    menu()    
 
 
 def find_product(id: int) -> int:
@@ -120,7 +137,7 @@ def list_products():
             print("Id: {}".format(product.get_description()))
             print("Name: {}".format(product.get_name()))
             print("Description: {}".format(product.get_description()))
-            print("Category: {}".format(product.get_category()))            
+            print("Category: {}".format(product.get_categories()))            
 
     menu()
 
@@ -168,14 +185,15 @@ def delete_product():
 
 def menu():
     opt = -1
-    while opt < 0 or opt > 4:
+    while opt < 0 or opt > 7:
         print("Hi! choose an opt or 0 for exit")
         print("1 - Create")
         print("2 - List")
         print("3 - Update")
         print("4 - Delete")
-        print("5 - List category")
         print("6 - Create category")
+        print("5 - List category")        
+        print("7 - choose category")
         print("0 - Exit")
         
         opt = int(input("opt: "))
@@ -189,11 +207,11 @@ def menu():
         elif opt == 3:
             update_product()            
         elif opt == 4:
-            delete_product()
+            delete_product()        
         elif opt == 5:
-            list_categories()
-        elif opt == 6:
             create_category()
+        elif opt == 6:
+            list_categories()        
         else:
             print("Ivalid opt!")  
                 
