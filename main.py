@@ -115,9 +115,7 @@ def create_category():
     category = Category(name)
     categories.append(category)
 
-    menu()
-
-   
+    menu() 
 
 
 def list_categories():
@@ -175,8 +173,8 @@ def find_product(id: int) -> int:
 def show_product(idx: int) -> None:
         print(f"Id: [products[idx].get_id()]")
         print(f"Name: [products[idx].get_name()]")
-        print(f"Description: {products[idx].get_description()}")
-        print(f"Category: {products[idx].get_category()}")
+        print(f"Description: [products[idx].get_description()]")
+        print(f"Category: [products[idx].get_category()]")
         
 
 def list_products():
