@@ -236,15 +236,14 @@ def delete_product():
 
 def menu():
     opt = -1
-    while opt < 0 or opt > 7:
+    while opt < 0 or opt > 6:
         print("Hi! choose an opt or 0 for exit")
         print("1 - Create")
         print("2 - List")
         print("3 - Update")
         print("4 - Delete")
-        print("6 - Create category")
-        print("5 - List category")        
-        print("7 - choose category")
+        print("5 - Create category")
+        print("6 - List category")      
         print("0 - Exit")
         
         opt = int(input("opt: "))
