@@ -115,7 +115,20 @@ def create_category():
     category = Category(name)
     categories.append(category)
 
-    menu() 
+    menu()
+
+def find_category(id: int) -> int:
+    idx = -1
+    for category in categories:
+        if category.get_id() == id:
+            idx = categories.index(category)
+            break
+    
+    return idx
+
+def show_category(idx: int) -> None:
+        print(f"Id: [categories[idx].get_id()]")
+        print(f"Name: [categories[idx].get_name()]")        
 
 
 def list_categories():
@@ -127,7 +140,6 @@ def list_categories():
             print("Name: {}".format(category.get_name()))
             
     menu()
-
 def create_product():
     print("Create a new product")
     name = input("Product name: ")
@@ -148,11 +160,10 @@ def create_product():
             print("Categories:")
             for category in categories:
                 print("{}. Name: {}".format([category.get_id(), category.get_name()]))
-        opr = int(input("Choose the category id: "))
-        # buscar categoria com o id escolhido
-
-        # adicionar nome da categoria em prod_categories
-        print(opr)
+        opr = int(input("Choose the category id: "))        
+        idx = find_category(id)
+        prod_category = categories[idx]       
+        prod_categories.append(prod_category.get_name())
 
     product = Product(name, description, prod_categories)
     products.append(product)
@@ -261,7 +272,8 @@ def menu():
         elif opt == 6:
             list_categories()        
         else:
-            print("Ivalid opt!")  
-                
+            print("Ivalid opt!") 
 
+    return opt
+                
 menu()
