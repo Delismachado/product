@@ -2,13 +2,21 @@ class Product:
     __id: int
     __name: str
     __description: str
+    __price: float
+    __weight: float
+    __width: float
+    __height: float    
     __categories: list[str]
 
 
-    def __init__(self, name: str, description: str, categories: []) -> None:
+    def __init__(self, name: str, description: str, price: float, weight: float, width: float, height: float, categories: []) -> None:
         self.set_id()
         self.set_name(name)
         self.set_description(description)
+        self.set_price(price)
+        self.set_weight(weight)
+        self.set_width(width)
+        self.set_height(height)        
         self.set_categories([])
         
 
@@ -25,10 +33,49 @@ class Product:
         return self.__name
 
     def set_description(self, description: str) -> None:
-        self.__description = description
+        if len(description) >= 20:
+            self.__description = description
+        else:
+            raise ValueError("To long!") 
 
     def get_description(self) -> str:
         return self.__description
+
+    def set_price(self, price: float) -> None:
+        if price > 0:
+            self.__price = price
+        else:
+            raise ValueError("Price must be positive!")
+
+    def get_price(self) -> float:
+        return self.__price
+
+    def set_weight(self, weight: float) -> None:
+        if weight > 0:
+            self.__weight = weight
+        else:
+            raise ValueError("Weight must be positive!")
+
+    def get_weight(self) -> float:
+        return self.__weight
+
+    def set_width(self, width: float) -> None:
+        if width> 0:
+            self.__width = width
+        else:
+            raise ValueError("Width must be positive!")
+
+    def get_width(self) -> float:
+        return self.__width
+
+    def set_height(self, height: float) -> None:
+        if height > 0:
+            self.__height = height
+        else:
+            raise ValueError("Height must be positive!")
+
+    def get_height(self) -> float:
+        return self.__height
 
     def set_categories(self, categories: list[str]) -> None:
         self.__categories = categories
@@ -87,7 +134,11 @@ def create_product():
     print("Create a new product")
     name = input("Product name: ")
     description = input("Product description: ")
-
+    price = float(input("Product price: "))
+    weight = float(input("Product weight: "))
+    width = float(input("Product width: "))
+    height = float(input("Product height: "))
+    
     print("Choose category:")
 
     prod_categories = []
@@ -101,7 +152,7 @@ def create_product():
                 print("{}. Name: {}".format([category.get_id(), category.get_name()]))
         opr = int(input("Choose the category id: "))
         # buscar categoria com o id escolhido
-        
+
         # adicionar nome da categoria em prod_categories
         print(opr)
 
