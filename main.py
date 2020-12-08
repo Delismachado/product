@@ -83,14 +83,14 @@ def create_product():
     menu()
 
 
-
 def list_categories():
     if len(categories) == 0:
         print("No categories available!")
     else:
         print("Categories:")
         for category in categories:
-            print("Name: {category.get_name()}")
+            print("Name: {}".format(categories.get_name()))
+            
     menu()
     
 
@@ -105,8 +105,8 @@ def find_product(id: int) -> int:
     return idx
 
 def show_product(idx: int) -> None:
-        print(f"Id: {products[idx].get_id()}")
-        print(f"Name: {products[idx].get_name()}")
+        print(f"Id: [products[idx].get_id()]")
+        print(f"Name: [products[idx].get_name()]")
         print(f"Description: {products[idx].get_description()}")
         print(f"Category: {products[idx].get_category()}")
         
@@ -117,9 +117,10 @@ def list_products():
     else:
         print("Products created:")
         for product in products:
-            print("id: {product.get_id()}")
-            print("Name: {product.get_name()}")
-            print("Description: {product.get_description()}")            
+            print("Id: {}".format(product.get_description()))
+            print("Name: {}".format(product.get_name()))
+            print("Description: {}".format(product.get_description()))
+            print("Category: {}".format(product.get_category()))            
 
     menu()
 
@@ -168,7 +169,7 @@ def delete_product():
 def menu():
     opt = -1
     while opt < 0 or opt > 4:
-        print("Choose an opt:")
+        print("Hi! choose an opt or 0 for exit")
         print("1 - Create")
         print("2 - List")
         print("3 - Update")
