@@ -1,5 +1,5 @@
 # CRUD for product
-### Product attributes (id, name, description)
+### Product attributes (id, name, description, price, category, weight, width, height)
 - create
 - list
 - update

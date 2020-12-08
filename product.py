@@ -6,10 +6,10 @@ class Product:
     __weight: float
     __width: float
     __height: float    
-    __categories: list[str]
+    __categories: list[str] = []
 
 
-    def __init__(self, name: str, description: str, price: float, weight: float, width: float, height: float, categories: []) -> None:
+    def __init__(self, name: str, description: str, price: float, weight: float, width: float, height: float, categories: list[str]) -> None:        
         self.set_id()
         self.set_name(name)
         self.set_description(description)
@@ -18,10 +18,16 @@ class Product:
         self.set_width(width)
         self.set_height(height)        
         self.set_categories([])
+
+        for category in categories:
+            self.set_category(category)
         
 
     def set_id(self) -> None:
-        self.__id = id        
+        if len(products) == 0:
+            self.__id = 1
+        else:
+            self.__id = products[-1].get_id() + 1        
 
     def get_id(self) -> int:
         return self.__id
@@ -77,13 +83,29 @@ class Product:
     def get_height(self) -> float:
         return self.__height
 
-    def set_categories(self, categories: list[str]) -> None:
-        self.__categories = categories
+    def set_category(self, category_id: int) -> None:
+        self.__categories.append(category_id)
 
-    def get_categories(self) -> list[str]:
-        return self.__categories
+    def get_categories(self) -> str:
+        categories_names = ""
+        for category_id in self.__categories:
+            idx = find_category(category_id)
+            if idx >= 0:
+                categories_names += categories[idx].get_name() + " "
+        return categories_names
 
 
+    def print_product(self) -> None:
+            print(f"Id: {self.get_id()}")
+            print(f"Name: {self.get_name()}")
+            print(f"Description: {self.get_description()}")
+            print(f"Price: R${self.get_price()}")
+            print(f"Weight: {self.get_weight()} kg")
+            print(f"Width: {self.get_width()} m")
+            print(f"Height: {self.get_height()} m")            
+            print(f"Categories: {self.get_categories()}\n")
+
+        
 class Category:
     __id: int
     __name: str
@@ -93,11 +115,14 @@ class Category:
         self.set_name(name)
 
     def set_id(self) -> None:
-        self.__id = id
+        if len(categories) == 0:
+            self.__id = 1
+        else:
+            self.__id = categories[-1].get_id() + 1
 
     def get_id(self) -> int:
         return self.__id
-        
+
     def set_name(self, name: str) -> None:
         self.__name = name
 
@@ -106,6 +131,25 @@ class Category:
 
 products = []
 categories = []
+
+def create_product():
+    print("Create a new product")
+    name = input("Product name: ")
+    description = input("Product description: ")
+    price = float(input("Product price: "))
+    weight = float(input("Product weight: "))
+    width = float(input("Product width: "))
+    height = float(input("Product height: "))
+    
+    categories_ids = input("Product categories id: ").split()
+    categories_ids = [int(category_id) for category_id in categories_ids]
+
+    product = Product(name, description, price, weight, width, height, categories_ids)
+
+    products.append(product)
+    print("Product created!")
+
+    menu()
 
 
 def create_category():
@@ -117,61 +161,6 @@ def create_category():
 
     menu()
 
-def find_category(id: int) -> int:
-    idx = -1
-    for category in categories:
-        if category.get_id() == id:
-            idx = categories.index(category)
-            break
-    
-    return idx
-
-def show_category(idx: int) -> None:
-        print(f"Id: [categories[idx].get_id()]")
-        print(f"Name: [categories[idx].get_name()]")        
-
-
-def list_categories():
-    if len(categories) == 0:
-        print("No categories available!")
-    else:
-        print("Categories:")
-        for category in categories:
-            print("Name: {}".format(category.get_name()))
-            
-    menu()
-def create_product():
-    print("Create a new product")
-    name = input("Product name: ")
-    description = input("Product description: ")
-    price = float(input("Product price: "))
-    weight = float(input("Product weight: "))
-    width = float(input("Product width: "))
-    height = float(input("Product height: "))
-    
-    print("Choose category:")
-
-    prod_categories = []
-    opr = 1
-    while opr != 0:
-        if len(categories) == 0:
-            print("No categories available!")
-        else:
-            print("Categories:")
-            for category in categories:
-                print("{}. Name: {}".format([category.get_id(), category.get_name()]))
-        opr = int(input("Choose the category id: "))        
-        idx = find_category(id)
-        prod_category = categories[idx]       
-        prod_categories.append(prod_category.get_name())
-
-    product = Product(name, description, prod_categories)
-    products.append(product)
-    print("Cool, registered product!")
-
-    menu()    
-
-
 def find_product(id: int) -> int:
     idx = -1
     for product in products:
@@ -181,12 +170,26 @@ def find_product(id: int) -> int:
     
     return idx
 
-def show_product(idx: int) -> None:
-        print(f"Id: [products[idx].get_id()]")
-        print(f"Name: [products[idx].get_name()]")
-        print(f"Description: [products[idx].get_description()]")
-        print(f"Category: [products[idx].get_category()]")
-        
+   
+
+def find_category(id: int) -> int:
+    idx = -1
+    for category in categories:
+        if category.get_id() == id:
+            idx = categories.index(category)
+            break
+    
+    return idx
+
+def list_categories():
+    if len(categories) == 0:
+        print("No categories available!")
+    else:
+        print("Categories:")
+        for category in categories:
+            print("Name: {}".format(category.get_name()))
+            
+    menu()        
 
 def list_products():
     if len(products) == 0:
@@ -194,10 +197,8 @@ def list_products():
     else:
         print("Products created:")
         for product in products:
-            print("Id: {}".format(product.get_description()))
-            print("Name: {}".format(product.get_name()))
-            print("Description: {}".format(product.get_description()))
-            print("Category: {}".format(product.get_categories()))            
+            #estava listando todos os atributos 1 a 1, após ver o código da Ju, lembrei que já tinha o método list...
+            product.show_product()                      
 
     menu()
 
@@ -209,13 +210,22 @@ def update_product():
 
     if idx >= 0:
         print("Product found!")
-        show_product(idx)
+        products[idx].show_product()
 
         name = input("New product name: ")
-        description = input("New product description: ")        
+        description = input("New product description: ")
+        price = float(input("New product price (R$): "))
+        weight = float(input("New product weight (kg): "))
+        width = float(input("New product width (m): "))
+        height = float(input("New product height (m): "))              
 
         products[idx].set_name(name)
-        products[idx].set_description(description)        
+        products[idx].set_description(description)
+        products[idx].set_price(price)
+        products[idx].set_weight(weight) 
+        products[idx].set_width(width)
+        products[idx].set_weight(weight)
+        products[idx].set_height(height)       
 
         print("Product updated!")
     else:
@@ -231,7 +241,7 @@ def delete_product():
 
     if idx >= 0:
         print("Product found!")
-        show_product(idx)
+        products[idx].print_product()
         
         opt = input("You want to delete? (Y/N) ")
         
