@@ -17,10 +17,7 @@ class Product:
         self.set_weight(weight)
         self.set_width(width)
         self.set_height(height)        
-        self.set_categories([])
-
-        for category in categories:
-            self.set_category(category)
+        self.set_categories(categories)
         
 
     def set_id(self) -> None:
@@ -39,7 +36,7 @@ class Product:
         return self.__name
 
     def set_description(self, description: str) -> None:
-        if len(description) >= 20:
+        if len(description) <= 20:
             self.__description = description
         else:
             raise ValueError("To long!") 
@@ -83,17 +80,14 @@ class Product:
     def get_height(self) -> float:
         return self.__height
 
-    def set_category(self, category_id: int) -> None:
-        self.__categories.append(category_id)
+    def set_categories(self, categories: list[str]) -> None:
+        self.__categories = categories
+
+    def append_category(self, category: str) -> None:
+        self.__categories.append(categories)
 
     def get_categories(self) -> str:
-        categories_names = ""
-        for category_id in self.__categories:
-            idx = find_category(category_id)
-            if idx >= 0:
-                categories_names += categories[idx].get_name() + " "
-        return categories_names
-
+        return self.__categories
 
     def print_product(self) -> None:
             print(f"Id: {self.get_id()}")
@@ -131,6 +125,9 @@ class Category:
 
 products = []
 categories = []
+categories.append(Category('Category 1'))
+categories.append(Category('Category 2'))
+categories.append(Category('Category 3'))
 
 def create_product():
     print("Create a new product")
@@ -141,16 +138,34 @@ def create_product():
     width = float(input("Product width: "))
     height = float(input("Product height: "))
     
-    categories_ids = input("Product categories id: ").split()
-    categories_ids = [int(category_id) for category_id in categories_ids]
+    prod_categories = []
 
-    product = Product(name, description, price, weight, width, height, categories_ids)
+    exit_menu = False
+    while not exit_menu:
+        list_categories()
+        chosen_id = int(input("Choose a category (id):"))
+
+        if chosen_id == 0 :
+            exit_menu = True
+        else :
+            category_idx = find_category_index(chosen_id)
+            if category_idx == -1:
+                print("Category not found!")
+            else:
+                chosen_category = categories[category_idx]
+                already_added = False
+                for cat in prod_categories:
+                    if cat == chosen_category.get_name():
+                        already_added = True
+                    print("em construção!")
+                    
+                
+                prod_categories.append(chosen_category.get_name())
+
+    product = Product(name, description, price, weight, width, height, prod_categories)
 
     products.append(product)
     print("Product created!")
-
-    menu()
-
 
 def create_category():
     print("Create a new category:")
@@ -159,7 +174,14 @@ def create_category():
     category = Category(name)
     categories.append(category)
 
-    menu()
+
+def find_category_index(id: int) -> int:
+    idx = -1
+    for category in categories:
+        if category.get_id() == id:
+            idx = products.index(category)
+            break
+    return idx
 
 def find_product(id: int) -> int:
     idx = -1
@@ -167,18 +189,6 @@ def find_product(id: int) -> int:
         if product.get_id() == id:
             idx = products.index(product)
             break
-    
-    return idx
-
-   
-
-def find_category(id: int) -> int:
-    idx = -1
-    for category in categories:
-        if category.get_id() == id:
-            idx = categories.index(category)
-            break
-    
     return idx
 
 def list_categories():
@@ -187,20 +197,15 @@ def list_categories():
     else:
         print("Categories:")
         for category in categories:
-            print("Name: {}".format(category.get_name()))
-            
-    menu()        
+            print("{} - Name: {}".format(category.get_id(), category.get_name()))
 
 def list_products():
     if len(products) == 0:
         print("The list is empty!")
     else:
         print("Products created:")
-        for product in products:
-            #estava listando todos os atributos 1 a 1, após ver o código da Ju, lembrei que já tinha o método list...
-            product.show_product()                      
-
-    menu()
+        for product in products:            
+            product.print_product()
 
 def update_product():
     print("Update a product")
@@ -210,14 +215,14 @@ def update_product():
 
     if idx >= 0:
         print("Product found!")
-        products[idx].show_product()
+        products[idx].print_product()
 
         name = input("New product name: ")
         description = input("New product description: ")
-        price = float(input("New product price (R$): "))
-        weight = float(input("New product weight (kg): "))
-        width = float(input("New product width (m): "))
-        height = float(input("New product height (m): "))              
+        price  = float(input("New product price R$: "))
+        weight = float(input("New product weight kg: "))
+        width  = float(input("New product width m: "))
+        height = float(input("New product height m: "))              
 
         products[idx].set_name(name)
         products[idx].set_description(description)
@@ -230,8 +235,6 @@ def update_product():
         print("Product updated!")
     else:
         print("Product not found!")
-
-    menu()
 
 def delete_product():
     print("Delete a product")
@@ -251,11 +254,10 @@ def delete_product():
     else:
         print("Product not found!")
 
-    menu()
-
 def menu():
     opt = -1
-    while opt < 0 or opt > 6:
+    exit_menu = False
+    while not exit_menu:
         print("Hi! choose an opt or 0 for exit")
         print("1 - Create")
         print("2 - List")
@@ -268,21 +270,21 @@ def menu():
         opt = int(input("opt: "))
 
         if opt == 0:
-            break
+            exit_menu = True
         elif opt == 1:
             create_product()
         elif opt == 2:
             list_products()
         elif opt == 3:
-            update_product()            
+            update_product()  
         elif opt == 4:
-            delete_product()        
+            delete_product()  
         elif opt == 5:
             create_category()
         elif opt == 6:
-            list_categories()        
+            list_categories() 
         else:
-            print("Ivalid opt!") 
+            print("Invalid opt!") 
 
     return opt
                 
